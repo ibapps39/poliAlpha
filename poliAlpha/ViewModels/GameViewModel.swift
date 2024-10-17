@@ -1,42 +1,40 @@
 //
-//  GameState.swift
+//  GameViewModel.swift
 //  poliAlpha
 //
-//  Created by Ian Brown on 10/16/24.
+//  Created by Ian Brown on 10/17/24.
 //
-
-// Minimal Sideeffects, other than visuals
 
 import Foundation
 import SwiftUI
 
-class GameState: ObservableObject {
-    @Published var stateA: State = State(
+class GameViewModel: ObservableObject {
+    @Published var stateA: StateModel = StateModel(
         name: "stateA",
         baseColor: .red,
         color: .red,
         influence: 0.00
     )
-    @Published var stateB: State = State(
+    @Published var stateB: StateModel = StateModel(
         name: "stateB",
         baseColor: .blue,
         color: .blue,
         influence: 0.00
     )
-    @Published var stateC: State = State(
+    @Published var stateC: StateModel = StateModel(
         name: "stateC",
         baseColor: .green,
         color: .green,
         influence: 0.00
     )
-    @Published var stateD: State = State(
+    @Published var stateD: StateModel = StateModel(
         name: "stateD",
         baseColor: .yellow,
         color: .yellow,
         influence: 0.00
     )
     
-    var highestInfluenceState: State? {
+    var highestInfluenceState: StateModel? {
         let states = [stateA, stateB, stateC, stateD]
         return states.max(by: { $0.influence < $1.influence })
     }
@@ -46,39 +44,39 @@ class GameState: ObservableObject {
         guard let (highestState, highestInfluence) = getHighestInfluence(states) else { return }
         
         for index in 0..<states.count {
-            var state = states[index]
-            if state.influence < highestInfluence {
-                let influenceDifference = highestInfluence - state.influence
+            var StateModel = states[index]
+            if StateModel.influence < highestInfluence {
+                let influenceDifference = highestInfluence - StateModel.influence
                 let percentage = influenceDifference / highestInfluence
                 
                 // Adjust the color based on the percentage difference
-                state.color = blendColor(state.baseColor, with: highestState.baseColor, percentage: percentage)
+                StateModel.color = blendColor(StateModel.baseColor, with: highestState.baseColor, percentage: percentage)
                 
-                // Update the state back to the array
+                // Update the StateModel back to the array
                 switch index {
-                case 0: stateA = state
-                case 1: stateB = state
-                case 2: stateC = state
-                case 3: stateD = state
+                case 0: stateA = StateModel
+                case 1: stateB = StateModel
+                case 2: stateC = StateModel
+                case 3: stateD = StateModel
                 default: break
                 }
             }
         }
     }
     
-    func getHighestInfluence(_ states: [State]) -> (State, Double)? {
-        var highestState: State?
+    func getHighestInfluence(_ states: [StateModel]) -> (StateModel, Double)? {
+        var highestState: StateModel?
         var highestInfluence: Double = 0
         
-        for state in states {
-            if state.influence > highestInfluence {
-                highestInfluence = state.influence
-                highestState = state
+        for StateModel in states {
+            if StateModel.influence > highestInfluence {
+                highestInfluence = StateModel.influence
+                highestState = StateModel
             }
         }
         
-        guard let state = highestState else { return nil }
-        return (state, highestInfluence)
+        guard let StateModel = highestState else { return nil }
+        return (StateModel, highestInfluence)
     }
     
     private func blendColor(_ baseColor: Color, with targetColor: Color, percentage: Double) -> Color {
