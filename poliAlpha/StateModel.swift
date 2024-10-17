@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct State {
+struct StateModel {
     let name: String
     let baseColor: Color   // Constant reference color
     var color: Color       // Current color that can change
