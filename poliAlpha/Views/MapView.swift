@@ -40,3 +40,7 @@ struct MapView: View {
     }
 }
 
+#Preview {
+    
+    MapView(viewModel: MapViewModel(gameState: GameViewModel()))
+}

@@ -34,6 +34,10 @@ class GameViewModel: ObservableObject {
         influence: 0.00
     )
     
+    @Published var campCash: Int = 100
+    
+    @Published var campInfluence: Double = 0.00
+    
     var highestInfluenceState: StateModel? {
         let states = [stateA, stateB, stateC, stateD]
         return states.max(by: { $0.influence < $1.influence })
