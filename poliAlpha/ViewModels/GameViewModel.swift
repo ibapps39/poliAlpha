@@ -6,69 +6,49 @@
 //
 
 import Foundation
+import Swift
 import SwiftUI
 
 class GameViewModel: ObservableObject {
-    @Published var stateA: StateModel = StateModel(
-        name: "stateA",
-        baseColor: .red,
-        color: .red,
-        influence: 0.00
-    )
-    @Published var stateB: StateModel = StateModel(
-        name: "stateB",
-        baseColor: .blue,
-        color: .blue,
-        influence: 0.00
-    )
-    @Published var stateC: StateModel = StateModel(
-        name: "stateC",
-        baseColor: .green,
-        color: .green,
-        influence: 0.00
-    )
-    @Published var stateD: StateModel = StateModel(
-        name: "stateD",
-        baseColor: .yellow,
-        color: .yellow,
-        influence: 0.00
-    )
+    @Published var gm: GameModel
     
-    @Published var campCash: Int = 100
-    
-    @Published var campInfluence: Double = 0.00
-    
-    var highestInfluenceState: StateModel? {
-        let states = [stateA, stateB, stateC, stateD]
-        return states.max(by: { $0.influence < $1.influence })
+    init() {
+        gm = GameModel(
+            stateA: StateModel(name: "stateA", baseColor: .red, color: .red, influence: 0.00),
+            stateB: StateModel(name: "stateB", baseColor: .blue, color: .blue, influence: 0.00),
+            stateC: StateModel(name: "stateC", baseColor: .green, color: .green, influence: 0.00),
+            stateD: StateModel(name: "stateD", baseColor: .yellow, color: .yellow, influence: 0.00),
+            campCash: 100,
+            campInfluence: 0.00
+        )
     }
-    
+
     func updateColorsBasedOnInfluence() {
-        let states = [stateA, stateB, stateC, stateD]
+        let states = [gm.stateA, gm.stateB, gm.stateC, gm.stateD]
         guard let (highestState, highestInfluence) = getHighestInfluence(states) else { return }
         
         for index in 0..<states.count {
-            var StateModel = states[index]
-            if StateModel.influence < highestInfluence {
-                let influenceDifference = highestInfluence - StateModel.influence
+            var stateModel = states[index]
+            if stateModel.influence < highestInfluence {
+                let influenceDifference = highestInfluence - stateModel.influence
                 let percentage = influenceDifference / highestInfluence
                 
                 // Adjust the color based on the percentage difference
-                StateModel.color = blendColor(StateModel.baseColor, with: highestState.baseColor, percentage: percentage)
+                stateModel.color = blendColor(stateModel.baseColor, with: highestState.baseColor, percentage: percentage)
                 
-                // Update the StateModel back to the array
+                // Update the StateModel back to the gm
                 switch index {
-                case 0: stateA = StateModel
-                case 1: stateB = StateModel
-                case 2: stateC = StateModel
-                case 3: stateD = StateModel
+                case 0: gm.stateA = stateModel
+                case 1: gm.stateB = stateModel
+                case 2: gm.stateC = stateModel
+                case 3: gm.stateD = stateModel
                 default: break
                 }
             }
         }
     }
-    
-    func getHighestInfluence(_ states: [StateModel]) -> (StateModel, Double)? {
+
+    private func getHighestInfluence(_ states: [StateModel]) -> (StateModel, Double)? {
         var highestState: StateModel?
         var highestInfluence: Double = 0
         
@@ -82,7 +62,7 @@ class GameViewModel: ObservableObject {
         guard let StateModel = highestState else { return nil }
         return (StateModel, highestInfluence)
     }
-    
+
     private func blendColor(_ baseColor: Color, with targetColor: Color, percentage: Double) -> Color {
         // Extract RGB components from both colors
         let baseComponents = UIColor(baseColor).cgColor.components ?? [0, 0, 0, 0]
@@ -96,3 +76,4 @@ class GameViewModel: ObservableObject {
         return Color(red: Double(r), green: Double(g), blue: Double(b))
     }
 }
+

@@ -7,31 +7,29 @@
 import SwiftUI
 
 struct MapView: View {
-    @ObservedObject var viewModel: MapViewModel
-
+    @ObservedObject var mvm: MapViewModel
+    
     var body: some View {
         VStack {
             HStack {
-                ForEach(viewModel.states.prefix(2), id: \.name) { state in
+                ForEach(mvm.mm.states.prefix(1), id: \.name) { state in
                     Rectangle()
-                        .fill(state.color)
+                        .fill()
                         .frame(width: 100, height: 100)
                 }
             }
             HStack {
-                ForEach(viewModel.states.suffix(2), id: \.name) { state in
+                ForEach(mvm.mm.states.prefix(2), id: \.name) { state in
                     Rectangle()
-                        .fill(state.color)
+                        .fill()
                         .frame(width: 100, height: 100)
                 }
             }
             VStack {
-                if let highestState = viewModel.highestInfluenceState {
-                    Text("Highest Influence State:\n \(highestState.name) - \(highestState.baseColor.description), Influence: \(String(format: "%.2f", highestState.influence))")
-                        .font(.headline)
-                        .padding()
-                }
-                ForEach(viewModel.states, id: \.name) { state in
+                Text("Highest Influence State:\n \(highestState.name) - \(highestState.baseColor.description), Influence: \(String(format: "%.2f", highestState.influence))")
+                    .font(.headline)
+                    .padding()
+                ForEach(mvm.states, id: \.name) { state in
                     Text("\(state.name) (\(state.baseColor)):\n Influence: \(String(format: "%.2f", state.influence))")
                 }
             }
@@ -42,5 +40,6 @@ struct MapView: View {
 
 #Preview {
     
-    MapView(viewModel: MapViewModel(gameState: GameViewModel()))
+    MapView(mvm: MapViewModel(gameViewModel: GameViewModel())
+    )
 }
