@@ -11,7 +11,8 @@ import SwiftUI
 
 class GameViewModel: ObservableObject {
     @Published var gm: GameModel
-    
+    @Published var highestState: StateModel?
+
     init() {
         gm = GameModel(
             stateA: StateModel(name: "stateA", baseColor: .red, color: .red, influence: 0.00),
@@ -25,7 +26,7 @@ class GameViewModel: ObservableObject {
 
     func updateColorsBasedOnInfluence() {
         let states = [gm.stateA, gm.stateB, gm.stateC, gm.stateD]
-        guard let (highestState, highestInfluence) = getHighestInfluence(states) else { return }
+        guard let (highState, highestInfluence) = getHighestInfluence(states) else { return }
         
         for index in 0..<states.count {
             var stateModel = states[index]
@@ -34,7 +35,7 @@ class GameViewModel: ObservableObject {
                 let percentage = influenceDifference / highestInfluence
                 
                 // Adjust the color based on the percentage difference
-                stateModel.color = blendColor(stateModel.baseColor, with: highestState.baseColor, percentage: percentage)
+                stateModel.color = blendColor(stateModel.baseColor, with: highState.baseColor, percentage: percentage)
                 
                 // Update the StateModel back to the gm
                 switch index {
@@ -49,18 +50,17 @@ class GameViewModel: ObservableObject {
     }
 
     private func getHighestInfluence(_ states: [StateModel]) -> (StateModel, Double)? {
-        var highestState: StateModel?
+        //var highestState: StateModel?
         var highestInfluence: Double = 0
         
-        for StateModel in states {
-            if StateModel.influence > highestInfluence {
-                highestInfluence = StateModel.influence
-                highestState = StateModel
+        for state in states {
+            if state.influence > highestInfluence {
+                highestInfluence = state.influence
+                highestState = state
             }
         }
         
-        guard let StateModel = highestState else { return nil }
-        return (StateModel, highestInfluence)
+        return highestState.map { ($0, highestInfluence) }
     }
 
     private func blendColor(_ baseColor: Color, with targetColor: Color, percentage: Double) -> Color {
@@ -76,4 +76,3 @@ class GameViewModel: ObservableObject {
         return Color(red: Double(r), green: Double(g), blue: Double(b))
     }
 }
-

@@ -7,20 +7,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var GameViewModel: GameViewModel
-    @StateObject var MapViewModel: MapViewModel
     
+    @StateObject private var gvm = GameViewModel()
     
     var body: some View {
-        GameView()
+        NavigationView {
+            VStack {
+                Text("Welcome to PoliAlpha!")
+                    .font(.largeTitle)
+                    .padding()
+
+                NavigationLink(destination: GameView(gvm: gvm)) {
+                    Text("Start Game")
+                        .font(.title2)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                
+                // You can add more navigation links or features here
+            }
+            .navigationTitle("Main Menu")
+        }
     }
 }
 
 #Preview {
-    ContentView(GameViewModel: GameViewModel(),
-                MapViewModel: MapViewModel(
-                    gameViewModel: GameViewModel()
-                )
-    )
+    ContentView()
 }
 

@@ -7,8 +7,7 @@
 import SwiftUI
 
 struct GameView: View {
-    @StateObject private var gvm = GameViewModel()
-    
+    @ObservedObject var gvm: GameViewModel
     @State private var selectedTab = 1 // Index for the MapView tab
     
     var body: some View {
@@ -17,40 +16,35 @@ struct GameView: View {
                 .tabItem {
                     Label("Policies", systemImage: "doc.plaintext")
                 }
-                .tag(0) // Tag for the Policies tab
+                .tag(0)
             
-            MapView(mvm: MapViewModel(gameViewModel: gvm))
-                .tabItem {
-                    Label("Map", systemImage: "map")
-                }
-                .tag(1) // Tag for the Map tab
+                // Pass the existing gvm to MapViewModel
+                MapView(mvm: MapViewModel(gameViewModel: gvm), gvm: gvm)
+                    .tabItem {
+                        Label("Map", systemImage: "map")
+                    }
+                    .tag(1)
             
             LobbyView()
                 .tabItem {
                     Label("Actions", systemImage: "star")
                 }
-                .tag(2) // Tag for the Actions tab
+                .tag(2)
+            
+            DebugMenu()
+                .tabItem {
+                    Label("Debug", systemImage: "computer")
+                }
+                .tag(3)
+            
         }
         .onAppear {
             GameLogic.startTimer(with: gvm)
         }
-        VStack {
-            // Display game state data
-            ForEach([gvm.gm.stateA,
-                     gvm.gm.stateB,
-                     gvm.gm.stateC,
-                     gvm.gm.stateD],
-                    id: \.name)
-            { state in
-                Text("\(state.name): Influence: \(state.influence)")
-                    .foregroundColor(state.color)
-            }
-            
-        }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    let gameViewModel = GameViewModel()
+    GameView(gvm: gameViewModel)
 }

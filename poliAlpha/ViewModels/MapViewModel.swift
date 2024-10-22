@@ -15,6 +15,12 @@ class MapViewModel: ObservableObject {
     
     init(gameViewModel: GameViewModel) {
         self.gvm = gameViewModel
-        self.mm = MapModel(states: [gvm.gm.stateA, gvm.gm.stateB, gvm.gm.stateC, gvm.gm.stateD])
+        self.mm = MapModel(
+            states: [
+                gvm.gm.stateA,
+                gvm.gm.stateB,
+                gvm.gm.stateC,
+                gvm.gm.stateD]
+        )
     }
 }
