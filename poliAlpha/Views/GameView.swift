@@ -43,6 +43,9 @@ struct GameView: View {
         .onAppear {
             GameLogic.startTimer(with: gvm)
         }
+        .onDisappear {
+            GameLogic.stopTimer()
+        }
     }
 }
 
