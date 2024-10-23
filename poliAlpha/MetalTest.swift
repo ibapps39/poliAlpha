@@ -82,11 +82,10 @@ class MetalTest {
         let stateDInf = stateDBuffer.contents().load(as: Float.self)
         
         DispatchQueue.main.async {
-            self.gameViewModel.stateA.influence += Double(stateAInf)
-            self.gameViewModel.stateB.influence += Double(stateBInf)
-            self.gameViewModel.stateC.influence += Double(stateCInf)
-            self.gameViewModel.stateA.influence += Double(stateDInf)
-            
+            self.gameViewModel.gm.stateA.influence += Double(stateAInf)
+            self.gameViewModel.gm.stateB.influence += Double(stateBInf)
+            self.gameViewModel.gm.stateC.influence += Double(stateCInf)
+            self.gameViewModel.gm.stateD.influence += Double(stateDInf)
             self.gameViewModel.updateColorsBasedOnInfluence()
         }
         
