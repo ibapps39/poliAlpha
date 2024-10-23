@@ -7,31 +7,34 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var gameState = GameViewModel()
-    @State private var selectedTab = 1 // Index for the MapView tab
-
+    
+    @StateObject private var gvm = GameViewModel()
+    
     var body: some View {
-        TabView(selection: $selectedTab) {
-            PolicyView()
-                .tabItem {
-                    Label("Policies", systemImage: "doc.plaintext")
+        NavigationView {
+            ZStack {
+                Image("png_Gemini")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea(.all)
+                VStack {
+                    Text("Welcome to PoliAlpha!")
+                        .font(.largeTitle)
+                        .padding()
+                    
+                    NavigationLink(destination: GameView(gvm: gvm)) {
+                        Text("Start Game")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    
+                    // You can add more navigation links or features here
                 }
-                .tag(0) // Tag for the Policies tab
-
-            MapView(viewModel: MapViewModel(gameState: gameState))
-                .tabItem {
-                    Label("Map", systemImage: "map")
-                }
-                .tag(1) // Tag for the Map tab
-
-            LobbyView()
-                .tabItem {
-                    Label("Actions", systemImage: "star")
-                }
-                .tag(2) // Tag for the Actions tab
-        }
-        .onAppear {
-            GameLogic.startTimer(with: gameState)
+            }
+            .navigationTitle("Main Menu")
         }
     }
 }
@@ -39,3 +42,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
