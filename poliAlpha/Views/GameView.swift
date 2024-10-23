@@ -38,6 +38,8 @@ struct GameView: View {
                 .tag(3)
             
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+        .ignoresSafeArea(.all)
         .onAppear {
             GameLogic.startTimer(with: gvm)
         }

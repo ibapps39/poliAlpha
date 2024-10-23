@@ -12,21 +12,27 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Welcome to PoliAlpha!")
-                    .font(.largeTitle)
-                    .padding()
-
-                NavigationLink(destination: GameView(gvm: gvm)) {
-                    Text("Start Game")
-                        .font(.title2)
+            ZStack {
+                Image("png_Gemini")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea(.all)
+                VStack {
+                    Text("Welcome to PoliAlpha!")
+                        .font(.largeTitle)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    
+                    NavigationLink(destination: GameView(gvm: gvm)) {
+                        Text("Start Game")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    
+                    // You can add more navigation links or features here
                 }
-                
-                // You can add more navigation links or features here
             }
             .navigationTitle("Main Menu")
         }

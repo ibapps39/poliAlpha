@@ -10,8 +10,11 @@ import SwiftUI
 struct PolicyView: View {
     
     var body: some View {
-        VStack {
-            
+        ZStack {
+            Image("png_policy2")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea(.all)
         }
     }
 }
