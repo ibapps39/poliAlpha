@@ -10,8 +10,11 @@ import SwiftUI
 var isMetal: Bool = false
 struct DebugMenu: View {
     var body: some View {
-        Text("MTLCreateSystemDefaultDevice()?\n.hasUnifiedMemory == \(MTLCreateSystemDefaultDevice()?.hasUnifiedMemory == true)")
-        Text("isMetal: \(isMetal)")
+        VStack {
+            Text("MTLCreateSystemDefaultDevice()?\n.hasUnifiedMemory == \(MTLCreateSystemDefaultDevice()?.hasUnifiedMemory == true)")
+            Text("isMetal: \(isMetal)")
+        }
+        
     }
 }
 
