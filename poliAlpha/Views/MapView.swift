@@ -14,7 +14,7 @@ struct MapView: View {
         ZStack {
             Image("png_image2_politica")
                 .resizable()
-                //.scaledToFill()
+            //.scaledToFill()
                 .ignoresSafeArea(.all)
             VStack {
                 // Display rectangles for all states in a 2x2 grid
@@ -35,7 +35,7 @@ struct MapView: View {
                     }
                 }
                 
-                VStack {
+                VStack(alignment: .leading) {
                     // Safely unwrap highestState
                     if let highestState = gvm.highestState {
                         Text("Highest Influence State:\n \(highestState.name) - \(highestState.baseColor.description), Influence: \(String(format: "%.2f", highestState.influence))")
@@ -45,12 +45,29 @@ struct MapView: View {
                         Text("No state with influence yet.")
                             .font(.headline)
                             .padding()
+                            .background(Color(red: 0.0, green: 49/255, blue: 83/255))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding()
                     }
                     
                     ForEach(mvm.mm.states, id: \.name) { state in
-                        Text("\(state.name) (\(state.baseColor)):\n Influence: \(String(format: "%.2f", state.influence))")
+                        HStack {
+                            Text("\(state.name) (")
+                                .foregroundColor(.white)
+                            Text("\(state.baseColor.description)")
+                                .foregroundColor(state.baseColor)
+                            Text("): Influence: ")
+                                .foregroundColor(.white)
+                            Text("\(String(format: "%.2f", state.influence))")
+                                .foregroundColor(state.baseColor)
+                        }
+                        .padding()
+                        .background(Color(red: 0.0, green: 49/255, blue: 83/255))
+                        .bold()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                 }
+                .foregroundStyle(.white)
             }
             .padding()
         }
