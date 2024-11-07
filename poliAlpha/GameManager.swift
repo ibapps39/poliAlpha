@@ -13,14 +13,17 @@ class GameLogic {
     
     static var timer: Timer?
     
-    static func initializeTimer(){
-        if MTLCreateSystemDefaultDevice() == nil {
-            startTimer(with: GameViewModel())
-        } else {
-            isMetal.toggle()
-            startMetalTimer(with: GameViewModel())
-        }
+    static func initializeTimer() {
+        startMetalTimer(with: GameViewModel())
     }
+//    static func initializeTimer() {
+//        if MTLCreateSystemDefaultDevice() == nil {
+//            startTimer(with: GameViewModel())
+//        } else {
+//            isMetal = true
+//            startMetalTimer(with: GameViewModel())
+//        }
+//    }
     
     static func startMetalTimer(with gameState: GameViewModel) {
         let metalTest = MetalTest(gameViewModel: gameState)
@@ -36,12 +39,12 @@ class GameLogic {
     }
     
     static func startTimer(with gvm: GameViewModel) {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             // Update state influences with your logic
             gvm.gm.stateA.influence += Double.random(in: -0.9...10.0)
-            gvm.gm.stateB.influence += Double.random(in: -0.1...10.0)
-            gvm.gm.stateC.influence += Double.random(in: -0.1...10.0)
-            gvm.gm.stateD.influence += Double.random(in: -0.1...10.0)
+            gvm.gm.stateB.influence += Double.random(in: -0.9...10.0)
+            gvm.gm.stateC.influence += Double.random(in: -0.9...10.0)
+            gvm.gm.stateD.influence += Double.random(in: -0.9...10.0)
             // Update colors based on influences
             gvm.updateColorsBasedOnInfluence()
         }

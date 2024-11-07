@@ -12,23 +12,36 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Image("png_image2_politica")
-                .resizable()
-            //.scaledToFill()
+            Color(red: 100/255, green: 49/255, blue: 60/255)
                 .ignoresSafeArea(.all)
             VStack {
-                // Display rectangles for all states in a 2x2 grid
+                if let highestState = gvm.highestState {
+                    Text("Highest Influence State:\n \(highestState.name) - \(highestState.baseColor.description), Influence: \(String(format: "%.2f", highestState.influence))")
+                        .font(.headline)
+                        .padding()
+                        .foregroundStyle(.white)
+                } else {
+                    Text("No state with influence yet.")
+                        .font(.headline)
+                        .padding()
+                        .background(Color(red: 0.0, green: 49/255, blue: 83/255))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding()
+                        .foregroundStyle(.white)
+                }
+                // Display first two states
                 VStack {
                     HStack {
                         ForEach(mvm.mm.states.prefix(2), id: \.name) { state in
-                            Rectangle()
+                            RoundedRectangle(cornerRadius: 10)
                                 .fill(state.color) // Set the rectangle's color
                                 .frame(width: 100, height: 100)
                         }
                     }
+                    // Display last two states
                     HStack {
                         ForEach(mvm.mm.states.dropFirst(2), id: \.name) { state in
-                            Rectangle()
+                            RoundedRectangle(cornerRadius: 10)
                                 .fill(state.color) // Set the rectangle's color
                                 .frame(width: 100, height: 100)
                         }
@@ -36,20 +49,6 @@ struct MapView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    // Safely unwrap highestState
-                    if let highestState = gvm.highestState {
-                        Text("Highest Influence State:\n \(highestState.name) - \(highestState.baseColor.description), Influence: \(String(format: "%.2f", highestState.influence))")
-                            .font(.headline)
-                            .padding()
-                    } else {
-                        Text("No state with influence yet.")
-                            .font(.headline)
-                            .padding()
-                            .background(Color(red: 0.0, green: 49/255, blue: 83/255))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .padding()
-                    }
-                    
                     ForEach(mvm.mm.states, id: \.name) { state in
                         HStack {
                             Text("\(state.name) (")
@@ -67,6 +66,7 @@ struct MapView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                 }
+                .padding()
                 .foregroundStyle(.white)
             }
             .padding()

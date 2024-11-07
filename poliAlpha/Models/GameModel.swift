@@ -13,7 +13,7 @@ struct GameModel {
     var stateC: StateModel
     var stateD: StateModel
     
-    var campCash: Int
+    var campCash: Double
     var campInfluence: Double
     
     var highestInfluenceState: StateModel? 
